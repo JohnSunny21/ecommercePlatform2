@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "orders") // Avoids conflicts with SQL keywords
 public class Order {
 
     @Id
@@ -39,6 +39,9 @@ public class Order {
     @ToString.Exclude
     private User user;
 
+    /**
+     * Automatically sets the order date before persisting to the database.
+     */
     @PrePersist
     private void setOrderDate() {
         if (orderDate == null) {
@@ -46,6 +49,11 @@ public class Order {
         }
     }
 
+    /**
+     * Check if the item is null and add the item to the orderItems.
+     * Ensures bidirectional consistency.
+     * @param item
+     */
     public void addOrderItem(OrderItem item) {
         if (item != null) {
             orderItems.add(item);
@@ -54,6 +62,12 @@ public class Order {
         }
     }
 
+    /**
+     * Check it item is null and also checks if the items contains the item.
+     * Then remove the item from the orderItems.
+     * Ensures bidirectional consistency.
+     * @param item
+     */
     public void removeOrderItem(OrderItem item){
         if(item != null && orderItems.contains(item)){
             orderItems.remove(item);
@@ -62,6 +76,9 @@ public class Order {
         }
     }
 
+    /**
+     * Updated the total amount based on the ordered items.
+     */
     private void updateTotalAmount(){
         this.totalAmount = orderItems.stream()
                 .map(OrderItem::getPrice)

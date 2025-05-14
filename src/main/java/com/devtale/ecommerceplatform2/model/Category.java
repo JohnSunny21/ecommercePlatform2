@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder // Enables fluent object creation
 @Entity
 public class Category {
 
@@ -21,12 +21,17 @@ public class Category {
 
     private String name;
 
-    @JsonIgnore
+    @JsonIgnore // Prevents infinite recursion in JSON serialization
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
-    @ToString.Exclude
-    private List<Product> products = new ArrayList<>();
+    @ToString.Exclude // Prevents infinite recursion in toString()
+    //private List<Product> products = new ArrayList<>(); // Ensures proper initialization. Avoids the NullPointerException.
+    private List<Product> products;
 
-
+    /**
+     * Constructor for creating a Category with a name.
+     * Uses @AllArgsConstructor instead for flexibility.
+     * @param name
+     */
     public Category(String name){
         this.name = name;
     }

@@ -19,13 +19,18 @@ public class Image {
     private Long id;
 
     @Column(nullable=false)
-    private String fileName;
+    private String fileName; // Ensures fileName is always present
 
     @Column(nullable = false)
-    private String fileType;
+    private String fileType; // Ensures fileType is always present
 
+    /**
+     * - Blob is database-specific and requires extra handling.
+     * - byte[] is easier to work with in Java applications.
+     * - Works well with Spring Boot REST APIs.
+     */
     @Lob
-    private byte[] image;
+    private byte[] image; // Changed from Blob to byte[] for better compatibility.
 
     private String downlaodUrl;
 
