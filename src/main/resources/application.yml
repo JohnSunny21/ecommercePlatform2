@@ -1,0 +1,35 @@
+server:
+  port:8081
+
+spring:
+  application:
+    name: ecommerce-application2
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecom_db2
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect:
+          format_sql: true
+    hibernate:
+      ddl-auto: update
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request_size: 5MB
+
+
+api:
+  prefix: /ecom/v1
+
+auth:
+  token:
+    jwtSecret: "WhereThereIsAWillThereAWayDontGiveUp"
+    expirationInMillis: 3600000
