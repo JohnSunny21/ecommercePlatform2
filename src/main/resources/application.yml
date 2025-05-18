@@ -1,5 +1,5 @@
 server:
-  port:8081
+  port: 8081
 
 spring:
   application:
@@ -31,5 +31,6 @@ api:
 
 auth:
   token:
-    jwtSecret: "WhereThereIsAWillThereAWayDontGiveUp"
+    jwtSecret: ${JWT_SECRET}
     expirationInMillis: 3600000
+

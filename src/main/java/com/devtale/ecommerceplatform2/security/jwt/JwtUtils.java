@@ -22,7 +22,7 @@ public class JwtUtils {
     private String jwtSecret;
 
     @Value("${auth.token.expirationInMillis}")
-    private int expirationTime;
+    private long expirationTime;
 
     public String generateTokenForUser(Authentication authentication){
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -59,8 +59,17 @@ public class JwtUtils {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        }catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e){
-            throw new JwtException(e.getMessage());
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT expired: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            System.out.println("JWT unsupported: " + e.getMessage());
+        } catch (MalformedJwtException e) {
+            System.out.println("JWT malformed: " + e.getMessage());
+        } catch (SignatureException e) {
+            System.out.println("JWT signature validation failed: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("JWT claims string is empty: " + e.getMessage());
         }
+        return false;
     }
 }
